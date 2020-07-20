@@ -1,13 +1,22 @@
 import 'package:deliciousfood/core/service/meal_request.dart';
+import 'package:deliciousfood/core/viewmodel/meal_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliciousfood/core/router/router.dart';
 import 'package:deliciousfood/ui/shared/app_theme.dart';
 import 'package:deliciousfood/ui/pages/main/main.dart';
+import 'package:provider/provider.dart';
+
+import 'core/viewmodel/favorite_view_model.dart';
 
 void main() {
-  LDMealRequest.getMealData();
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (ctx) => LDMealViewModel()),
+      ChangeNotifierProvider(create: (ctx) => LDFavoriteViewModel()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -24,4 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

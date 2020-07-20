@@ -1,3 +1,4 @@
+import 'package:deliciousfood/ui/pages/meal/meal.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliciousfood/core/extension/int_extentsion.dart';
@@ -12,17 +13,22 @@ class LDHomeCategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = _categoryModel.cColor;
 
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.redAccent,
-          borderRadius: BorderRadius.circular(12.px),
-          gradient:
-              LinearGradient(colors: [bgColor.withOpacity(0.5), bgColor])),
-      alignment: Alignment.center,
-      child: Text(
-        _categoryModel.title,
-        style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold),
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.redAccent,
+            borderRadius: BorderRadius.circular(12.px),
+            gradient:
+                LinearGradient(colors: [bgColor.withOpacity(0.5), bgColor])),
+        alignment: Alignment.center,
+        child: Text(
+          _categoryModel.title,
+          style: TextStyle(fontSize: 16.px, fontWeight: FontWeight.bold),
+        ),
       ),
+      onTap: () {
+        Navigator.of(context).pushNamed(LDMealScreen.routeName, arguments: _categoryModel);
+      },
     );
   }
 }

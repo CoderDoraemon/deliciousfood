@@ -1,3 +1,4 @@
+import 'package:deliciousfood/core/utils/log.dart';
 import 'package:dio/dio.dart';
 import 'http_config.dart';
 import 'methods.dart';
@@ -6,8 +7,8 @@ import 'base_model.dart';
 import 'base_list_model.dart';
 
 class HttpRequest {
-
   static final HttpRequest _shared = HttpRequest._initialize();
+
   factory HttpRequest() => _shared;
   Dio dio;
 
@@ -26,7 +27,7 @@ class HttpRequest {
 
       // 2、添加拦截器
       Interceptor dInter =
-      InterceptorsWrapper(onRequest: (RequestOptions options) {
+          InterceptorsWrapper(onRequest: (RequestOptions options) {
         print("请求之前");
         // 设置loading
 
@@ -53,22 +54,25 @@ class HttpRequest {
   // params：请求参数
   // success：请求成功回调
   // error：请求失败回调
-  Future<T> request<T>(String path, {Map<String, dynamic> params, Method method = Method.get}) async {
+  Future<T> request<T>(String path,
+      {Map<String, dynamic> params, Method method = Method.get}) async {
     try {
-      Response response = await dio.request(path, queryParameters: params, options: Options(method: method.value));
-
+      Response response = await dio.request(path,
+          queryParameters: params, options: Options(method: method.value));
+      FLog(response);
       if (response != null) {
         return response.data;
         BaseModel entity = BaseModel<T>.fromJson(response.data);
         if (entity.code == 0) {
           return entity.data;
         } else {
-          return Future.error(ErrorModel(code: entity.code, message: entity.message));
+          return Future.error(
+              ErrorModel(code: entity.code, message: entity.message));
         }
       } else {
         return Future.error(ErrorModel(code: -1, message: "未知错误"));
       }
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       return Future.error(createErrorEntity(e));
     }
   }
@@ -79,20 +83,23 @@ class HttpRequest {
   // params：请求参数
   // success：请求成功回调
   // error：请求失败回调
-  Future<List<T>> requestList<T>(String path, {Map<String, dynamic> params, Method method}) async {
+  Future<List<T>> requestList<T>(String path,
+      {Map<String, dynamic> params, Method method}) async {
     try {
-      Response response = await dio.request(path, queryParameters: params, options: Options(method: method.value));
+      Response response = await dio.request(path,
+          queryParameters: params, options: Options(method: method.value));
       if (response != null) {
         BaseListModel entity = BaseListModel<T>.fromJson(response.data);
         if (entity.code == 0) {
           return entity.data;
         } else {
-          return Future.error(ErrorModel(code: entity.code, message: entity.message));
+          return Future.error(
+              ErrorModel(code: entity.code, message: entity.message));
         }
       } else {
         return Future.error(ErrorModel(code: -1, message: "未知错误"));
       }
-    } on DioError catch(e) {
+    } on DioError catch (e) {
       return Future.error(createErrorEntity(e));
     }
   }
@@ -100,27 +107,32 @@ class HttpRequest {
   // 错误信息
   ErrorModel createErrorEntity(DioError error) {
     switch (error.type) {
-      case DioErrorType.CANCEL:{
-        return ErrorModel(code: -1, message: "请求取消");
-      }
-      break;
-      case DioErrorType.CONNECT_TIMEOUT:{
-        return ErrorModel(code: -1, message: "连接超时");
-      }
-      break;
-      case DioErrorType.SEND_TIMEOUT:{
-        return ErrorModel(code: -1, message: "请求超时");
-      }
-      break;
-      case DioErrorType.RECEIVE_TIMEOUT:{
-        return ErrorModel(code: -1, message: "响应超时");
-      }
-      break;
-      case DioErrorType.RESPONSE:{
-        try {
-          int errCode = error.response.statusCode;
-          String errMsg = error.response.statusMessage;
-          return ErrorModel(code: errCode, message: errMsg);
+      case DioErrorType.CANCEL:
+        {
+          return ErrorModel(code: -1, message: "请求取消");
+        }
+        break;
+      case DioErrorType.CONNECT_TIMEOUT:
+        {
+          return ErrorModel(code: -1, message: "连接超时");
+        }
+        break;
+      case DioErrorType.SEND_TIMEOUT:
+        {
+          return ErrorModel(code: -1, message: "请求超时");
+        }
+        break;
+      case DioErrorType.RECEIVE_TIMEOUT:
+        {
+          return ErrorModel(code: -1, message: "响应超时");
+        }
+        break;
+      case DioErrorType.RESPONSE:
+        {
+          try {
+            int errCode = error.response.statusCode;
+            String errMsg = error.response.statusMessage;
+            return ErrorModel(code: errCode, message: errMsg);
 //          switch (errCode) {
 //            case 400: {
 //              return ErrorEntity(code: errCode, message: "请求语法错误");
@@ -158,14 +170,15 @@ class HttpRequest {
 //              return ErrorEntity(code: errCode, message: "未知错误");
 //            }
 //          }
-        } on Exception catch(_) {
-          return ErrorModel(code: -1, message: "未知错误");
+          } on Exception catch (_) {
+            return ErrorModel(code: -1, message: "未知错误");
+          }
         }
-      }
-      break;
-      default: {
-        return ErrorModel(code: -1, message: error.message);
-      }
+        break;
+      default:
+        {
+          return ErrorModel(code: -1, message: error.message);
+        }
     }
   }
 }

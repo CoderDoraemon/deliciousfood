@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'favor_content.dart';
+
 class LDFavorScreen extends StatelessWidget {
 
   static const String routeName = "/favor";
@@ -11,7 +13,7 @@ class LDFavorScreen extends StatelessWidget {
         title: Text("收藏"),
       ),
       body: Container(
-        child: Text("收藏"),
+        child: LDFavorContent(),
       ),
     );;
   }

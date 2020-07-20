@@ -9,9 +9,15 @@ class LDMealRequest {
 
     final patch = "/meal";
 
-    HttpRequest().request(patch).then((res) {
-      Log(res);
-    });
+    final result = await HttpRequest().request(patch);
+
+    final mealArray = result["meal"];
+    List<LDMealModel> meals = [];
+    for (var meal in mealArray) {
+      meals.add(LDMealModel.fromJson(meal));
+    }
+
+    return meals;
   }
 
 }

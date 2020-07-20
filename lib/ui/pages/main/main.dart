@@ -1,3 +1,4 @@
+import 'package:deliciousfood/ui/pages/home/home_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliciousfood/ui/pages/main/initialize_items.dart';
@@ -36,6 +37,7 @@ class _LDMainScreenState extends State<LDMainScreen> {
           });
         },
       ),
+      drawer: LDHomeDrawer(),
     );
   }
 }

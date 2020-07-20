@@ -11,6 +11,9 @@ class LDHomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("首页"),
+        leading: IconButton(icon: Icon(Icons.build), onPressed: () {
+          Scaffold.of(context).openDrawer();
+        },),
       ),
       body: LDHomeContent(),
     );

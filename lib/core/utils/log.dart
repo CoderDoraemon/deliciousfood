@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:stack_trace/stack_trace.dart';
 
-enum LogMode {
+enum FLogMode {
   debug,    // 💚 DEBUG
   warning,  // 💛 WARNING
   info,     // 💙 INFO
   error,    // ❤️ ERROR
 }
 
-String Log(dynamic msg, { LogMode mode = LogMode.debug }) {
+String FLog(dynamic msg, { FLogMode mode = FLogMode.debug }) {
   if (kReleaseMode) { // release模式不打印
-    return "";
+//    return "";
   }
   var chain = Chain.current(); // Chain.forTrace(StackTrace.current);
   // 将 core 和 flutter 包的堆栈合起来（即相关数据只剩其中一条）
@@ -27,16 +27,16 @@ String Log(dynamic msg, { LogMode mode = LogMode.debug }) {
 
   var modeStr = "";
   switch(mode) {
-    case LogMode.debug:
+    case FLogMode.debug:
       modeStr = "💚 DEBUG";
       break;
-    case LogMode.warning:
+    case FLogMode.warning:
       modeStr = "💛 WARNING";
       break;
-    case LogMode.info:
+    case FLogMode.info:
       modeStr = "💙 INFO";
       break;
-    case LogMode.error:
+    case FLogMode.error:
       modeStr = "❤️ ERROR";
       break;
   }
