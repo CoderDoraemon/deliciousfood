@@ -1,3 +1,4 @@
+import 'package:deliciousfood/ui/pages/filter/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:deliciousfood/core/extension/int_extentsion.dart';
 
@@ -14,7 +15,8 @@ class LDHomeDrawer extends StatelessWidget {
 
             }),
             buildContent(Icon(Icons.settings), "过滤", () {
-
+              print("=====");
+              Navigator.of(context).pushNamed(LDFilterScreen.routeName);
             }),
           ],
         ),
