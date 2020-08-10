@@ -1,10 +1,9 @@
-import 'package:deliciousfood/core/service/meal_request.dart';
+import 'package:deliciousfood/core/viewmodel/filter_view_model.dart';
 import 'package:deliciousfood/core/viewmodel/meal_view_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:deliciousfood/core/router/router.dart';
 import 'package:deliciousfood/ui/shared/app_theme.dart';
-import 'package:deliciousfood/ui/pages/main/main.dart';
 import 'package:provider/provider.dart';
 
 import 'core/viewmodel/favorite_view_model.dart';
@@ -12,8 +11,19 @@ import 'core/viewmodel/favorite_view_model.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (ctx) => LDMealViewModel()),
-      ChangeNotifierProvider(create: (ctx) => LDFavoriteViewModel()),
+      ChangeNotifierProvider(create: (ctx) => LDFilterViewModel()),
+      ChangeNotifierProxyProvider<LDFilterViewModel, LDMealViewModel>(
+          create: (ctx) => LDMealViewModel(),
+          update: (ctx, filterVM, mealVM) {
+            mealVM.updateFilters(filterVM);
+            return mealVM;
+          }),
+      ChangeNotifierProxyProvider<LDFilterViewModel, LDFavoriteViewModel>(
+          create: (ctx) => LDFavoriteViewModel(),
+          update: (ctx, filterVM, favorVM) {
+            favorVM.updateFilters(filterVM);
+            return favorVM;
+          }),
     ],
     child: MyApp(),
   ));
